@@ -1,0 +1,103 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+## Loading in libraries
+
+```{r}
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(janitor)
+
+```
+
+## Brief introduction to the dataset
+
+## List of assumptions
+
+## Steps to clean the code
+
+## Answers to questions from the brief
+
+## Other interesting analyses and conclusions
+
+## Data Cleaning
+```{r}
+This data has row formats; how to get rid of them
+This data isn’t tidy.
+You will want better column header names.
+```
+
+```{r}
+# reading in data
+decathalon_data <- read_rds("decathlon.rds")
+
+#add here
+```
+
+```{r}
+head(decathalon_data)
+```
+
+
+```{r}
+# removing row names
+
+
+decathalon_data$names <- c("Serble", "Clay", "Karpov", "Bernard", "Yurkov",
+                           "Warners", "Zsivoczky", "McMullen", "Martineau", 
+                           "Hernu", "Barras", "Nool", "Bouguignon", "Serble",
+                           "Clay", "Karpov", "Macey", "Warners", "Zsivoczky",
+                           "Hernu", "Nool", "Bernard", "Schwarzl", "Pogorelov",
+                           "Schoenbeck", "Barras", "Smith", "Averyanov", 
+                           "Ojaniemi", "Smirnov", "Qi", "Drews", "Parkhomenko",
+                           "Terek", "Gomez", "Turi", "Lorenzo", "Karlivans",
+                           "Korkizoglou", "Uldal", "Casarsa")
+
+
+rownames(decathalon_data) <- NULL
+
+```
+
+```{r}
+# clean column names
+
+clean_decathalon <- clean_names(clean_decathalon)
+
+clean_decathalon <- decathalon_data %>%
+  relocate(names, .before = "100m")
+```
+
+```{r}
+# several still start with x
+#go through these again
+clean_decathalon <- clean_decathalon %>%
+  rename("110m_hurdle" = "x110m.hurdle",
+         "1500m" = "x1500m",
+         "javelin" = "javeline",
+         "point_total" = "points")
+
+```
+
+```{r}
+clean_decathalon <- clean_decathalon %>%
+  pivot_longer(cols = names, names_to = "name",
+               values_to = "winner_of_competition") %>%
+   pivot_wider(names_from = competition,
+              values_from = winner_of_competition)
+
+```
+
+
+```{r}
+# Analysis questions
+# 
+# Who had the longest long jump seen in the data?
+# What was the average 100m time in each competition?
+# Who had the highest total points across both competitions?
+# What was the shot-put scores for the top three competitors in each competition?
+# What was the average points for competitors who ran the 400m in less than 50 seconds vs. those than ran 400m in more than 50 seconds?
+
+```
+
