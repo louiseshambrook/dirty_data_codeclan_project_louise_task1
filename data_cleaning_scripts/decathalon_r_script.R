@@ -1,18 +1,16 @@
 # Cleaning --------------------------------------------------------------------
 
-# Reading in scripts ------------
+# Reading in scripts -----------------------------------------------------------
 library(readr)
 library(tidyverse)
 library(dplyr)
 library(janitor)
+library(here)
 
-# Reading in data ---------------
-decathalon_data <- read_rds("decathlon.rds")
+# Reading in data --------------------------------------------------------------
+decathalon_data <- read_rds(here::here("~/GitHub/dirty_data/task_1/dirty_data_codeclan_project_louise_task1/raw_data/decathlon.rds"))
 
-read_rds(here::here("decathlon.rds"))
-# add the here thing!
-
-# Moving row names into the dataframe -------------
+# Moving row names into the dataframe ------------------------------------------
 decathalon_data$names <- c("Serble", "Clay", "Karpov", "Bernard", "Yurkov",
                            "Warners", "Zsivoczky", "McMullen", "Martineau", 
                            "Hernu", "Barras", "Nool", "Bouguignon", "Serble",
@@ -35,11 +33,11 @@ decathalon_data <- decathalon_data %>%
 
 # Cleaning the remaining column names to conform to tidy standard
 decathalon_data <- decathalon_data %>%
-  rename("100m" = "x100m",
-         "400m" = "x400m",
-         "110m_hurdle" = "x110m_hurdle",
+  rename("hundred_metre" = "x100m",
+         "four_hundred_metre" = "x400m",
+         "one_hundred_ten_metre_hurdle" = "x110m_hurdle",
          "javelin" = "javeline",
-         "1500m" = "x1500m")
+         "fifteen_hundred_metre" = "x1500m")
 
 # Pivoting the decathalon table
 decathalon_data <- decathalon_data %>%
@@ -48,4 +46,10 @@ decathalon_data <- decathalon_data %>%
   pivot_wider(names_from = competition,
               values_from = winner_of_competition)
 
-write_csv(decathalon_data, file = "GitHub/dirty_data/task_1/dirty_data_codeclan_project_louise_task1/clean_data/decathalon_clean.csv")
+# Further name changes, following pivoting the table
+decathalon_data <- decathalon_data %>%
+  rename("decastar" = "Decastar",
+         "olympic" = "OlympicG")
+
+write_csv(decathalon_data,
+          file = "~/GitHub/dirty_data/task_1/dirty_data_codeclan_project_louise_task1/clean_data/decathalon_clean.csv")

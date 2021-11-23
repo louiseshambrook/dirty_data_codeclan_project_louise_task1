@@ -229,11 +229,10 @@ library(here)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>To do: - Assertive programming - Unit tests - Analysis - Doing readme - Changing to public on git</p>
 </div>
 <div id="brief-introduction-to-the-dataset" class="section level2">
 <h2>Brief introduction to the dataset</h2>
-<p>This is a dataset with results from two decathalon competitions, Decastar and Olympics.</p>
+<p>This is a dataset with results from two decathalon competitions, the Decastar which is an annual French competition, organised by World Athletics, and the Olympics which is organised by the IOC.</p>
 </div>
 <div id="list-of-assumptions" class="section level2">
 <h2>List of assumptions</h2>
@@ -244,7 +243,7 @@ library(here)</code></pre>
 <div id="steps-to-clean-the-code" class="section level2">
 <h2>Steps to clean the code</h2>
 <ul>
-<li>Moving the names from the rownames, and into a column for names.</li>
+<li>Moving the names from the row names, and into a column for names.</li>
 <li>Deleting the row names.</li>
 <li>Moving the row names column to the front of the dataset.</li>
 <li>Cleaning all the column names using janitor.</li>
@@ -252,19 +251,25 @@ library(here)</code></pre>
 <li>Pivoting the table.</li>
 <li>Saved to csv.</li>
 </ul>
+<div id="note" class="section level3">
+<h3>Note</h3>
+<ul>
+<li>Unit tests and assertive programming are outstanding.</li>
+</ul>
 <p>Reading in cleaned data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2xlYW5lZF9kZWNhdGhhbG9uX2RhdGEgPC0gcmVhZF9jc3YoXCJjbGVhbl9kYXRhL2RlY2F0aGFsb25fY2xlYW4uY3N2XCIpXG5cbmBgYCJ9 -->
-<pre class="r"><code>cleaned_decathalon_data &lt;- read_csv(&quot;clean_data/decathalon_clean.csv&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2xlYW5lZF9kZWNhdGhhbG9uX2RhdGEgPC1cbiAgcmVhZF9jc3YoaGVyZTo6aGVyZShcIn4vR2l0SHViL2RpcnR5X2RhdGEvdGFza18xL2RpcnR5X2RhdGFfY29kZWNsYW5fcHJvamVjdF9sb3Vpc2VfdGFzazEvY2xlYW5fZGF0YS9kZWNhdGhhbG9uX2NsZWFuLmNzdlwiKSlcblxuYGBgIn0= -->
+<pre class="r"><code>cleaned_decathalon_data &lt;-
+  read_csv(here::here(&quot;~/GitHub/dirty_data/task_1/dirty_data_codeclan_project_louise_task1/clean_data/decathalon_clean.csv&quot;))
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogNDEgQ29sdW1uczogMTVcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCIsXCJcbmNociAgKDMpOiBuYW1lLCBEZWNhc3RhciwgT2x5bXBpY0dcbmRibCAoMTIpOiAxMDBtLCBsb25nX2p1bXAsIHNob3RfcHV0LCBoaWdoX2p1bXAsIDQwMG0sIDExMG1faHVyZGxlLCBkaXNjdXMsIHBvbGVfdmF1bHQsIGphdmVsaW4sIDE1MDBtLCByYW5rLCAuLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiUm93czogNDEgQ29sdW1uczogMTVcbuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCIsXCJcbmNociAgKDMpOiBuYW1lLCBkZWNhc3Rhciwgb2x5bXBpY1xuZGJsICgxMik6IGh1bmRyZWRfbWV0cmUsIGxvbmdfanVtcCwgc2hvdF9wdXQsIGhpZ2hfanVtcCwgZm91cl9odW5kcmVkX21ldHJlLCBvbmVfaHVuZHJlZF90ZW5fbWV0cmVfaHVyZGxlLCBkaXNjdXMsIHBvbGVfdmF1bHQsIGphdmVsaW4sIGZpZnRlZW4uLi5cblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
 <pre><code>Rows: 41 Columns: 15
-── Column specification ─────────────────────────────────────────────────────────────────────────────────────────
+── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Delimiter: &quot;,&quot;
-chr  (3): name, Decastar, OlympicG
-dbl (12): 100m, long_jump, shot_put, high_jump, 400m, 110m_hurdle, discus, pole_vault, javelin, 1500m, rank, ...
+chr  (3): name, decastar, olympic
+dbl (12): hundred_metre, long_jump, shot_put, high_jump, four_hundred_metre, one_hundred_ten_metre_hurdle, discus, pole_vault, javelin, fifteen...
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
@@ -272,70 +277,67 @@ dbl (12): 100m, long_jump, shot_put, high_jump, 400m, 110m_hurdle, discus, pole_
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
+</div>
 <div id="answers-to-questions-from-the-brief" class="section level2">
 <h2>Answers to questions from the brief</h2>
 <p>Who had the longest long jump seen in the data?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsZWN0IG5hbWVzIGFuZCBsb25nX2p1bXBcbmZpbHRlciBieSBoaWdoZXN0XG5cbmBgYCJ9 -->
-<pre class="r"><code>select names and long_jump
-filter by highest
-</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Mywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDMiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMjFRVVVyRU1CQ2R0STI3RGJnS0hzQVR0RDhpK0NNSWlnY1FoZjFiWXRwZHEybFNraFRkUCsvaW9mWTJ1MDVxSWhJTVRETHplUE5tWGg3dWxoZHN5UUFnaDRJUXlDbW1RSjhlNzZzcmdDTERna0FCcFg4L2tIUTJNUUVXSHJnNTM3SHI0V3VIK2VrZlluRXIrZllYQXlnUGVCSXhxbmpmMmtES0ExaEtyVGFyMTdFZkFqRFRjdHNQblFqbHZHa0Z0NDZiUkt3MCtyMk9nc2NZMlNkZS8wMFZrbHVick1zYTduaTlOdGlQMVQ1cG1lbkJkVnBoVSthOTA2U1ptQVE0R1pYZnBLbkV5NmplcWtzL0lQd0RoTzFJaUpqblB5T3pRNUNpUWVxb1ZadE90WEYzeVo5YkdZb0ZPcDRNMTRQcGxJdE9FTFcxMDQ1SEhoTmFSbVR5QnZ0dm52dExYL0lCQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["long_jump"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["olympic"],"name":[2],"type":["chr"],"align":["left"]},{"label":["decastar"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"7.96","2":"Clay","3":"NA"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>What was the average 100m time in each competition?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsZWN0IGRlY2FzdGFyIGFuZCAxMDBtXG5tZWFuXG5maW5kIG5hbWVcblxuc2FtZSBmb3Igb2x5bXBpY3NcblxuXG5cblxuYGBgIn0= -->
-<pre class="r"><code>select decastar and 100m
-mean
-find name
-
-same for olympics
-</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDEiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFQd1FyQ01BeE50MVZ4b0FoK2c4Y054WXMzUFlnZklBcmVwSzVWaDdPVnJxSkhQOWt2Y0thakJXa2hUZkxJeTh2YnJQYXpkSjhDUUF3SklSQlRMSUh1dHV0c0RwQkUyQkJJb0dmekM0ZEdMUUF3c0hrNWJtRHhpWnRna0VwMkV6VVd3ejl3ZEJOTUhyZ29XRzBPbDRma1d2Q0ExOVBxbVh0dUh5TjY0OWZnQ3dXS2l0V2hRTXFaWWZsSkl4KzdiMERwcXJzcGxVUlNaQzNRZ0V4MEFBd2YwbDdDc3dKdnZXYlRpVlZ3M3NHZFIxejgxVll6YXR3dTZuWjFoRHlYVXZqakszWVVsV3NHYUxsMW5OOTFLWTIzZ21pZEcyV1luMHNMVlhta05RZmZINmJQc0tDNkFRQUEifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["mean_decast_hundred"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"10.99805"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Who had the highest total points across both competitions?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsZWN0IGRlY2FzdGFyXG5oaWdoZXN0IG9mIHRoZSBwb2ludHNcbndob1xuXG5cbnNlbGVjdCBvbHltcGljc1xuaGlnaGVzdCBvZiB0aGUgcG9pbnRzXG53aG9cblxuXG5gYGAifQ== -->
-<pre class="r"><code>select decastar
-highest of the points
-who
-
-
-select olympics
-highest of the points
-who
-</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFReTQ0Q0lSQnNjRmpqSkQ2Uy9ZNlpnMTQ4ZWpCK3dLNG1ua3h3UkoySU1BR011N2Y5dGYweHRabUJ4TkFYdW9vcXVvdXY1WGFXYjNNQTZFRkdDUFFZdHNBMjYxVXhCOGdvQWdJWkRQejVnNkpQYkR3NThzVGlmL2NIWFUzZWhCL2Z3dXlsU094TThhdXdRVXFqdE5HMWNqYWd2cGEvMTZhdUV1ZkE2SHNaM1VQdjlsT2ZXT21JU25KcmsyM3lBM2U4UEJyMEkzb2tscjV1WEswVm1xaVB4aEl6TVFreHZpbS95YUdvempkMUthWitRSHZkMVREMDVLMm4zVWo2REUreG1GMm9VNjFFM0YzeXZaQUJqREJ4Rzdoc0RQNVBUSUtzTFoxMlBPcnlTc3ZJdE5uZzhRS1VXRW1jMFFFQUFBPT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["points"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["olympic"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"8893","2":"Serble"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>What was the shot-put scores for the top three competitors in each competition?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsZWN0IHJhbmtcbmZpbHRlciBzaG90IHB1dCBvbmx5XG5ncm91cCBieSBjb21wZXRpdG9yIGFuZCByYW5rID49IDFcbnNlZSBwb2ludCBzY29yZXNcblxuYGBgIn0= -->
-<pre class="r"><code>select rank
-filter shot put only
-group by competitor and rank &gt;= 1
-see point scores
-</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIzIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFRUzA3RE1CQ2RmRXhiU3kxSVhLS2JCQ1JZc093Q3NVRnMrRWhkVkVKdWFtaUVhMGVPQTNUSERiZ1Q1K0FhWlVmRE9MRWxaQzg4ODk3NHpmUE03ZVg4ak00cEFDU1FSaEVrQkZNZ0QvZFgyUVZBR2lPSUlJV1JqZS80NkJnVFMwNnNZbmE2bU82K1BoZXprMjhYRzd5blAxZzc2anQyd29NN3JwZUNlM1ROZEtWZUhTSTNyT0Rid0lsSXR1RzE2eEk3Y2xpdmxYbXNHdVB3UUludHBpcUxRRHZTNmkzMytySFZmK0RWdHUxdmFGSUlWbnNUVDlJVk15eC8wcWhIdEE4a0ExV1pVa2tVeFhZUEpCQkhPaUFPRzJsL3NzcUtkU05mc25OcjBKWDdNM1o1OGkrUGU4dTRkYTJJM3hxWHo2WDBPeVNDTGJsd1lJSVRkd1BubFM2bFh3OUZ0czZOTXN5L280VVNudWxtZy8wZkQ4VnNQLzRCQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["shot_put"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["olympic"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"16.36","2":"Serble"},{"1":"15.93","2":"Karpov"},{"1":"15.73","2":"Macey"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>What was the average points for competitors who ran the 400m in less than 50 seconds vs. those than ran 400m in more than 50 seconds?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyIGNvbXBldGl0b3JzIHdoZXJlIDQwMG0gPiA1MFxubWVhbiBwb2ludHNcblxuZmlsdGVyIGNvbXBldGl0b3JzIHdoZXJlIDQwMG0gPCA1MFxubWVhbiBwb2ludHNcblxuYGBgIn0= -->
-<pre class="r"><code>filter competitors where 400m &gt; 50
-mean points
-
-filter competitors where 400m &lt; 50
-mean points
-</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDEiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFRU3dyQ01CQ2QxRWF4K0FNdm9VTHJRaENYTHNRRGlFSzNzVVl0MXFTMEVWMTZubm9IajZaT1NnS1NRREl6ajNsdjVtV3ppbWRCSEFCQUEzeENvRUV4QmJyYnJzTUZnTzloUWNDSHRvNFBiQnJXQUVCUHgrVjdPcW1xNnVVMFVzR3V2TVJrOEFkMnJweUpVUzVUb2NxeFEyZ1g4aDVaVWhldjk4VG5pOGRWVGpKV3VzckJnU2tXSFF2a1kvVnhLQzJacTFRS0pIbDZkK3FRU2VFQS9adlFteHpDNUh3VGwzQ3VCeGpQWUxZajV2N2xlcVQzTlZMVVNEVzVPS1dDMjkwenR1ZVpLWHJvdURZYzVRWCtpSFdDYUJrcHFaanRDeEtaV2FUMkJwOGZPRHBjNXJJQkFBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["mean(points)"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"7727.167"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -348,7 +350,7 @@ mean points
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQojIyBMb2FkaW5nIGluIGxpYnJhcmllcwoKYGBge3J9CmxpYnJhcnkocmVhZHIpCmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGRwbHlyKQpsaWJyYXJ5KGphbml0b3IpCmxpYnJhcnkocmVhZHIpCmxpYnJhcnkoaGVyZSkKYGBgCgpUbyBkbzoKLSBBc3NlcnRpdmUgcHJvZ3JhbW1pbmcKLSBVbml0IHRlc3RzCi0gQW5hbHlzaXMKLSBEb2luZyByZWFkbWUKLSBDaGFuZ2luZyB0byBwdWJsaWMgb24gZ2l0CgojIyBCcmllZiBpbnRyb2R1Y3Rpb24gdG8gdGhlIGRhdGFzZXQKVGhpcyBpcyBhIGRhdGFzZXQgd2l0aCByZXN1bHRzIGZyb20gdHdvIGRlY2F0aGFsb24gY29tcGV0aXRpb25zLCBEZWNhc3RhciBhbmQKT2x5bXBpY3MuCgojIyBMaXN0IG9mIGFzc3VtcHRpb25zCi0gVGhhdCB0aGUgbmFtZXMgd2VyZSBub3QgbmVlZGVkLgoKIyMgU3RlcHMgdG8gY2xlYW4gdGhlIGNvZGUKLSBNb3ZpbmcgdGhlIG5hbWVzIGZyb20gdGhlIHJvd25hbWVzLCBhbmQgaW50byBhIGNvbHVtbiBmb3IgbmFtZXMuCi0gRGVsZXRpbmcgdGhlIHJvdyBuYW1lcy4KLSBNb3ZpbmcgdGhlIHJvdyBuYW1lcyBjb2x1bW4gdG8gdGhlIGZyb250IG9mIHRoZSBkYXRhc2V0LgotIENsZWFuaW5nIGFsbCB0aGUgY29sdW1uIG5hbWVzIHVzaW5nIGphbml0b3IuCi0gTWFudWFsbHkgY2xlYW5pbmcgdGhlIHJlbWFpbmluZyBjb2x1bW4gbmFtZXMsIGJ5IG1hbnVhbGx5IHJlbmFtaW5nIHRoZW0uCi0gUGl2b3RpbmcgdGhlIHRhYmxlLgotIFNhdmVkIHRvIGNzdi4KClJlYWRpbmcgaW4gY2xlYW5lZCBkYXRhCmBgYHtyfQojIHJlYWRpbmcgaW4gY2xlYW5lZCBkYXRhCmNsZWFuZWRfZGVjYXRoYWxvbl9kYXRhIDwtIHJlYWRfY3N2KCJjbGVhbl9kYXRhL2RlY2F0aGFsb25fY2xlYW4uY3N2IikKCjwtIHJlYWRfY3N2KGhlcmU6OmhlcmUoKSkKCgpgYGAKCiMjIEFuc3dlcnMgdG8gcXVlc3Rpb25zIGZyb20gdGhlIGJyaWVmCgpXaG8gaGFkIHRoZSBsb25nZXN0IGxvbmcganVtcCBzZWVuIGluIHRoZSBkYXRhPwpgYGB7cn0Kc2VsZWN0IG5hbWVzIGFuZCBsb25nX2p1bXAKZmlsdGVyIGJ5IGhpZ2hlc3QKCmBgYAoKV2hhdCB3YXMgdGhlIGF2ZXJhZ2UgMTAwbSB0aW1lIGluIGVhY2ggY29tcGV0aXRpb24/CmBgYHtyfQpzZWxlY3QgZGVjYXN0YXIgYW5kIDEwMG0KbWVhbgpmaW5kIG5hbWUKCnNhbWUgZm9yIG9seW1waWNzCgoKCgpgYGAKCldobyBoYWQgdGhlIGhpZ2hlc3QgdG90YWwgcG9pbnRzIGFjcm9zcyBib3RoIGNvbXBldGl0aW9ucz8KYGBge3J9CnNlbGVjdCBkZWNhc3RhcgpoaWdoZXN0IG9mIHRoZSBwb2ludHMKd2hvCgoKc2VsZWN0IG9seW1waWNzCmhpZ2hlc3Qgb2YgdGhlIHBvaW50cwp3aG8KCgpgYGAKCldoYXQgd2FzIHRoZSBzaG90LXB1dCBzY29yZXMgZm9yIHRoZSB0b3AgdGhyZWUgY29tcGV0aXRvcnMgaW4gZWFjaCBjb21wZXRpdGlvbj8KYGBge3J9CnNlbGVjdCByYW5rCmZpbHRlciBzaG90IHB1dCBvbmx5Cmdyb3VwIGJ5IGNvbXBldGl0b3IgYW5kIHJhbmsgPj0gMQpzZWUgcG9pbnQgc2NvcmVzCgpgYGAKV2hhdCB3YXMgdGhlIGF2ZXJhZ2UgcG9pbnRzIGZvciBjb21wZXRpdG9ycyB3aG8gcmFuIHRoZSA0MDBtIGluIGxlc3MgdGhhbiA1MCBzZWNvbmRzIHZzLiB0aG9zZSB0aGFuIHJhbiA0MDBtIGluIG1vcmUgdGhhbiA1MCBzZWNvbmRzPwpgYGB7cn0KZmlsdGVyIGNvbXBldGl0b3JzIHdoZXJlIDQwMG0gPiA1MAptZWFuIHBvaW50cwoKZmlsdGVyIGNvbXBldGl0b3JzIHdoZXJlIDQwMG0gPCA1MAptZWFuIHBvaW50cwoKYGBgCgojIyBPdGhlciBpbnRlcmVzdGluZyBhbmFseXNlcyBhbmQgY29uY2x1c2lvbnMKYGBge3J9CgpgYGAKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQojIyBMb2FkaW5nIGluIGxpYnJhcmllcwoKYGBge3J9CmxpYnJhcnkocmVhZHIpCmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGRwbHlyKQpsaWJyYXJ5KGphbml0b3IpCmxpYnJhcnkocmVhZHIpCmxpYnJhcnkoaGVyZSkKYGBgCgojIyBCcmllZiBpbnRyb2R1Y3Rpb24gdG8gdGhlIGRhdGFzZXQKVGhpcyBpcyBhIGRhdGFzZXQgd2l0aCByZXN1bHRzIGZyb20gdHdvIGRlY2F0aGFsb24gY29tcGV0aXRpb25zLCB0aGUgRGVjYXN0YXIgCndoaWNoIGlzIGFuIGFubnVhbCBGcmVuY2ggY29tcGV0aXRpb24sIG9yZ2FuaXNlZCBieSBXb3JsZCBBdGhsZXRpY3MsCmFuZCB0aGUgT2x5bXBpY3Mgd2hpY2ggaXMgb3JnYW5pc2VkIGJ5IHRoZSBJT0MuIAoKIyMgTGlzdCBvZiBhc3N1bXB0aW9ucwotIFRoYXQgdGhlIG5hbWVzIHdlcmUgbm90IG5lZWRlZC4KCiMjIFN0ZXBzIHRvIGNsZWFuIHRoZSBjb2RlCi0gTW92aW5nIHRoZSBuYW1lcyBmcm9tIHRoZSByb3cgbmFtZXMsIGFuZCBpbnRvIGEgY29sdW1uIGZvciBuYW1lcy4KLSBEZWxldGluZyB0aGUgcm93IG5hbWVzLgotIE1vdmluZyB0aGUgcm93IG5hbWVzIGNvbHVtbiB0byB0aGUgZnJvbnQgb2YgdGhlIGRhdGFzZXQuCi0gQ2xlYW5pbmcgYWxsIHRoZSBjb2x1bW4gbmFtZXMgdXNpbmcgamFuaXRvci4KLSBNYW51YWxseSBjbGVhbmluZyB0aGUgcmVtYWluaW5nIGNvbHVtbiBuYW1lcywgYnkgbWFudWFsbHkgcmVuYW1pbmcgdGhlbS4KLSBQaXZvdGluZyB0aGUgdGFibGUuCi0gU2F2ZWQgdG8gY3N2LgoKIyMjIE5vdGUKLSBVbml0IHRlc3RzIGFuZCBhc3NlcnRpdmUgcHJvZ3JhbW1pbmcgYXJlIG91dHN0YW5kaW5nLiAKClJlYWRpbmcgaW4gY2xlYW5lZCBkYXRhCmBgYHtyfQojIHJlYWRpbmcgaW4gY2xlYW5lZCBkYXRhCmNsZWFuZWRfZGVjYXRoYWxvbl9kYXRhIDwtCiAgcmVhZF9jc3YoaGVyZTo6aGVyZSgifi9HaXRIdWIvZGlydHlfZGF0YS90YXNrXzEvZGlydHlfZGF0YV9jb2RlY2xhbl9wcm9qZWN0X2xvdWlzZV90YXNrMS9jbGVhbl9kYXRhL2RlY2F0aGFsb25fY2xlYW4uY3N2IikpCmBgYAoKIyMgQW5zd2VycyB0byBxdWVzdGlvbnMgZnJvbSB0aGUgYnJpZWYKCldobyBoYWQgdGhlIGxvbmdlc3QgbG9uZyBqdW1wIHNlZW4gaW4gdGhlIGRhdGE/CmBgYHtyfQpjbGVhbmVkX2RlY2F0aGFsb25fZGF0YSAlPiUKICBzZWxlY3QobG9uZ19qdW1wLCBvbHltcGljLCBkZWNhc3RhcikgJT4lCiAgYXJyYW5nZShkZXNjKGxvbmdfanVtcCkpICU+JQogIHNsaWNlX21heCgxKQojIGZpbmRpbmcgdGhlIGxvbmdlc3QgbG9uZyBqdW1wZXIgCmBgYAoKV2hhdCB3YXMgdGhlIGF2ZXJhZ2UgMTAwbSB0aW1lIGluIGVhY2ggY29tcGV0aXRpb24/CmBgYHtyfQpjbGVhbmVkX2RlY2F0aGFsb25fZGF0YSAlPiUKICBzZWxlY3QoaHVuZHJlZF9tZXRyZSwgZGVjYXN0YXIpICU+JQogIHN1bW1hcmlzZShtZWFuX2RlY2FzdF9odW5kcmVkID0gbWVhbihodW5kcmVkX21ldHJlKSkKI2ZpbmRpbmcgdGhlIG1lYW4gZm9yIHRoZSBEZWNhc3RhciBodW5kcmVkX21ldHJlCgpjbGVhbmVkX2RlY2F0aGFsb25fZGF0YSAlPiUKICBzZWxlY3QoaHVuZHJlZF9tZXRyZSwgb2x5bXBpYykgJT4lCiAgc3VtbWFyaXNlKG1lYW5fb2x5bXBfaHVuZHJlZCA9IG1lYW4oaHVuZHJlZF9tZXRyZSkpCiNmaW5kaW5nIHRoZSBtZWFuIGZvciB0aGUgT2x5bXBpYyBodW5kcmVkX21ldHJlCgpgYGAKCldobyBoYWQgdGhlIGhpZ2hlc3QgdG90YWwgcG9pbnRzIGFjcm9zcyBib3RoIGNvbXBldGl0aW9ucz8KYGBge3J9CmNsZWFuZWRfZGVjYXRoYWxvbl9kYXRhICU+JQogIHNlbGVjdChwb2ludHMsIGRlY2FzdGFyKSAlPiUKICBmaWx0ZXIoIWlzLm5hKGRlY2FzdGFyKSkgJT4lCiAgYXJyYW5nZShkZXNjKHBvaW50cykpICU+JQogIHNsaWNlX21heCgxKQojIEZpbmRpbmcgdGhlIGNvbXBldGl0b3Igd2l0aCB0aGUgaGlnaGVzdCBwb2ludCB0b3RhbCBpbiB0aGUgRGVjYXN0YXIgRGVjYXRoYWxvbgoKY2xlYW5lZF9kZWNhdGhhbG9uX2RhdGEgJT4lCiAgc2VsZWN0KHBvaW50cywgb2x5bXBpYykgJT4lCiAgZmlsdGVyKCFpcy5uYShvbHltcGljKSkgJT4lCiAgYXJyYW5nZShkZXNjKHBvaW50cykpICU+JQogIHNsaWNlX21heCgxKQojIEZpbmRpbmcgdGhlIGNvbXBldGl0b3Igd2l0aCB0aGUgaGlnaGVzdCBwb2ludCB0b3RhbCBpbiB0aGUgT2x5bXBpY3MgRGVjYXRoYWxvbgpgYGAKCldoYXQgd2FzIHRoZSBzaG90LXB1dCBzY29yZXMgZm9yIHRoZSB0b3AgdGhyZWUgY29tcGV0aXRvcnMgaW4gZWFjaCBjb21wZXRpdGlvbj8KYGBge3J9CmNsZWFuZWRfZGVjYXRoYWxvbl9kYXRhICU+JQogIHNlbGVjdChzaG90X3B1dCwgZGVjYXN0YXIpICU+JQogIGZpbHRlcighaXMubmEoZGVjYXN0YXIpKSAlPiUKICBhcnJhbmdlKGRlc2Moc2hvdF9wdXQpKSAlPiUKICBzbGljZSgxOjMpCiMgZmluZGluZyB0aGUgdG9wIHRocmVlIHNob3QgcHV0IHNjb3JlcyBmb3IgRGVjYXN0YXIgRGVjYXRoYWxvbgoKY2xlYW5lZF9kZWNhdGhhbG9uX2RhdGEgJT4lCiAgc2VsZWN0KHNob3RfcHV0LCBvbHltcGljKSAlPiUKICBmaWx0ZXIoIWlzLm5hKG9seW1waWMpKSAlPiUKICBhcnJhbmdlKGRlc2Moc2hvdF9wdXQpKSAlPiUKICBzbGljZSgxOjMpCiMgZmluZGluZyB0aGUgdG9wIHRocmVlIHNob3QgcHV0IHNjb3JlcyBmb3IgT2x5bXBpYyBEZWNhdGhhbG9uCmBgYApXaGF0IHdhcyB0aGUgYXZlcmFnZSBwb2ludHMgZm9yIGNvbXBldGl0b3JzIHdobyByYW4gdGhlIDQwMG0gaW4gbGVzcyB0aGFuIDUwCnNlY29uZHMgdnMuIHRob3NlIHRoYW4gcmFuIDQwMG0gaW4gbW9yZSB0aGFuIDUwIHNlY29uZHM/CmBgYHtyfQpjbGVhbmVkX2RlY2F0aGFsb25fZGF0YSAlPiUKICBzZWxlY3QoZm91cl9odW5kcmVkX21ldHJlLCBwb2ludHMpICU+JQogIGZpbHRlcihmb3VyX2h1bmRyZWRfbWV0cmUgPD0gNTApICU+JQogIHN1bW1hcmlzZShtZWFuKHBvaW50cykpCiMgZmluZGluZyB0aGUgYXZlcmFnZSBwb2ludCB0b3RhbCBmb3IgY29tcGV0aXRvcnMgd2hvIHJhbiB0aGUgZm91ciBodW5kcmVkIG1ldHJlCiMgaW4gbGVzcyB0aGFuIG9yIGVxdWFsIHRvIDUwcy4gCgpjbGVhbmVkX2RlY2F0aGFsb25fZGF0YSAlPiUKICBzZWxlY3QoZm91cl9odW5kcmVkX21ldHJlLCBwb2ludHMpICU+JQogIGZpbHRlcihmb3VyX2h1bmRyZWRfbWV0cmUgPiA1MCkgJT4lCiAgc3VtbWFyaXNlKG1lYW4ocG9pbnRzKSkKIyBmaW5kaW5nIHRoZSBhdmVyYWdlIHBvaW50IHRvdGFsIGZvciBjb21wZXRpdG9ycyB3aG8gcmFuIHRoZSBmb3VyIGh1bmRyZWQgbWV0cmUKIyBpbiBtb3JlIHRoYW4gNTBzLgpgYGAKCiMjIE90aGVyIGludGVyZXN0aW5nIGFuYWx5c2VzIGFuZCBjb25jbHVzaW9ucwpgYGB7cn0KCmBgYAoK</div>
 
 
 
@@ -395,7 +397,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("dirty_data_codeclan_louise.Rmd");
+  window.initializeSourceEmbed("dirty_data_codeclan_louise_task1_decathalon.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

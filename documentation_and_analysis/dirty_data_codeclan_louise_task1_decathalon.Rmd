@@ -1,0 +1,123 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+## Loading in libraries
+
+```{r}
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(janitor)
+library(readr)
+library(here)
+```
+
+## Brief introduction to the dataset
+This is a dataset with results from two decathalon competitions, the Decastar 
+which is an annual French competition, organised by World Athletics,
+and the Olympics which is organised by the IOC. 
+
+## List of assumptions
+- That the names were not needed.
+
+## Steps to clean the code
+- Moving the names from the row names, and into a column for names.
+- Deleting the row names.
+- Moving the row names column to the front of the dataset.
+- Cleaning all the column names using janitor.
+- Manually cleaning the remaining column names, by manually renaming them.
+- Pivoting the table.
+- Saved to csv.
+
+### Note
+- Unit tests and assertive programming are outstanding. 
+
+Reading in cleaned data
+```{r}
+# reading in cleaned data
+cleaned_decathalon_data <-
+  read_csv(here::here("~/GitHub/dirty_data/task_1/dirty_data_codeclan_project_louise_task1/clean_data/decathalon_clean.csv"))
+```
+
+## Answers to questions from the brief
+
+Who had the longest long jump seen in the data?
+```{r}
+cleaned_decathalon_data %>%
+  select(long_jump, olympic, decastar) %>%
+  arrange(desc(long_jump)) %>%
+  slice_max(1)
+# finding the longest long jumper 
+```
+
+What was the average 100m time in each competition?
+```{r}
+cleaned_decathalon_data %>%
+  select(hundred_metre, decastar) %>%
+  summarise(mean_decast_hundred = mean(hundred_metre))
+#finding the mean for the Decastar hundred_metre
+
+cleaned_decathalon_data %>%
+  select(hundred_metre, olympic) %>%
+  summarise(mean_olymp_hundred = mean(hundred_metre))
+#finding the mean for the Olympic hundred_metre
+
+```
+
+Who had the highest total points across both competitions?
+```{r}
+cleaned_decathalon_data %>%
+  select(points, decastar) %>%
+  filter(!is.na(decastar)) %>%
+  arrange(desc(points)) %>%
+  slice_max(1)
+# Finding the competitor with the highest point total in the Decastar Decathalon
+
+cleaned_decathalon_data %>%
+  select(points, olympic) %>%
+  filter(!is.na(olympic)) %>%
+  arrange(desc(points)) %>%
+  slice_max(1)
+# Finding the competitor with the highest point total in the Olympics Decathalon
+```
+
+What was the shot-put scores for the top three competitors in each competition?
+```{r}
+cleaned_decathalon_data %>%
+  select(shot_put, decastar) %>%
+  filter(!is.na(decastar)) %>%
+  arrange(desc(shot_put)) %>%
+  slice(1:3)
+# finding the top three shot put scores for Decastar Decathalon
+
+cleaned_decathalon_data %>%
+  select(shot_put, olympic) %>%
+  filter(!is.na(olympic)) %>%
+  arrange(desc(shot_put)) %>%
+  slice(1:3)
+# finding the top three shot put scores for Olympic Decathalon
+```
+What was the average points for competitors who ran the 400m in less than 50
+seconds vs. those than ran 400m in more than 50 seconds?
+```{r}
+cleaned_decathalon_data %>%
+  select(four_hundred_metre, points) %>%
+  filter(four_hundred_metre <= 50) %>%
+  summarise(mean(points))
+# finding the average point total for competitors who ran the four hundred metre
+# in less than or equal to 50s. 
+
+cleaned_decathalon_data %>%
+  select(four_hundred_metre, points) %>%
+  filter(four_hundred_metre > 50) %>%
+  summarise(mean(points))
+# finding the average point total for competitors who ran the four hundred metre
+# in more than 50s.
+```
+
+## Other interesting analyses and conclusions
+```{r}
+
+```
+
